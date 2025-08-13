@@ -1,0 +1,130 @@
+{% extends "adminbase.html" %}
+
+
+{% block content %}
+
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Admin!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'emp_payment_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'emp_payment' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+       <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Employee Payment Details Form</h3>
+            <a href="{% url 'emp_payment_service' %}" class="btn btn-primary btn-rounded mr-3">Search</a>
+        </div>
+        <div class="col-12">
+            <form method="post" class="form-group">
+                 {% csrf_token %}
+                 <div class="row w-100">
+            <!-- 💰 EMPLOYEE PAYMENT FORM -->
+
+            <!-- Payment ID -->
+            <div class="col-lg-4 mb-3 form-group">
+                <label for="paymentId">Payment ID</label>
+                <input type="text" name="paymentId" id="paymentId" class="form-control p-2"
+                    placeholder="PAY001" required>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <!-- Employee ID / Name -->
+            <div class="col-lg-4 mb-3 form-group">
+                <label for="employeeId">Employee ID / Name</label>
+                <select name="employeeId" id="employeeId" class="form-control p-2" required>
+                    <option value="">select employee id</option>
+                    {% for x in emp_details %}
+                        <option value="{{x.emp_id}}">{{x.emp_id}} - {{x.emp_name}}</option>
+                    {% endfor %}
+                </select>
+                
+            </div>
+
+            <!-- Payment Date -->
+            <div class="col-lg-4 mb-3 form-group">
+                <label for="paymentDate">Payment Date</label>
+                <input type="date" name="paymentDate" id="paymentDate" class="form-control p-2" required>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <!-- Payment Month & Year -->
+            <div class="col-lg-4 mb-3 form-group">
+                <label for="paymentMonth">Month & Year</label>
+                <input type="month" name="paymentMonth" id="paymentMonth" class="form-control p-2" required>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <!-- Net Salary -->
+            <div class="col-lg-4 mb-3 form-group">
+                <label for="netSalary">Net Salary (₹)</label>
+                <input type="number" name="netSalary" id="netSalary" class="form-control p-2"
+                    placeholder="e.g. 25000" required>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <!-- Payment Mode -->
+            <div class="col-lg-4 mb-3 form-group">
+                <label for="paymentMode">Payment Mode</label>
+                <select name="paymentMode" id="paymentMode" class="form-control p-2" required>
+                    <option selected disabled value="">Select Payment Mode</option>
+                    <option>Cash</option>
+                    <option>Bank Transfer</option>
+                    <option>UPI</option>
+                    <option>Cheque</option>
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <!-- Remarks -->
+            <div class="col-lg-6 mb-3 form-group">
+                <label for="remarks">Remarks</label>
+                <textarea name="remarks" id="remarks" class="form-control p-2"
+                    placeholder="Enter any additional notes (optional)" rows="3"></textarea>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            <!-- 🔘 SUBMIT & RESET BUTTONS -->
+            <div class="col-12">
+                <div class="d-flex justify-content-center align-items-center">
+                    <button type="submit" class="btn btn-primary fs-5 p-2 rounded-1">Submit</button>
+                    <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+            

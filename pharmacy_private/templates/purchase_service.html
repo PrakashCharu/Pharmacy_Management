@@ -1,0 +1,161 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Admin!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'purchase_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'purchase_details' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Purchase Service Form</h3>
+            <a href="{% url 'purchase_details' %}" class="btn btn-primary btn-rounded mr-3">+&nbsp;Add&nbsp;New</a>
+        </div>
+        <div class="col-12">
+            <form action="" class="form-group">
+                {% csrf_token %}
+                <div class="row w-100">
+                    <!-- 🔹 PURCHASE SERVICE FORM -->
+
+              <!-- Purchase ID -->
+                <div class="col-lg-4 mb-3 form-group">
+                    <label for="purchaseId">Purchase ID</label>
+                    <select name="purchaseId" id="purchaseId" class="form-control p-2" required>
+                        <option value="" selected disabled>select purchase ID</option>
+                             {% for x in data.purchase_id %}
+                                <option value="{{x.purchase_id}}">{{x.purchase_id}}</option>
+                            {% endfor %}
+                    </select>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <!-- Purchase Date -->
+                <div class="col-lg-4 mb-3 form-group">
+                    <label for="purchaseDate">Purchase Date</label>
+                    <select name="purchaseDate" id="purchaseDate" class="form-control p-2" required>
+                        <option value="">Select Purchase Date</option>
+                    </select>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <!-- Supplier Name -->
+                <div class="col-lg-4 mb-3 form-group">
+                    <label for="supplierName">Supplier Name</label>
+                    <select name="supplierName" id="supplierName" class="form-control p-2" required>
+                        <option value="" selected disabled>select Supplier Name  </option>
+                             {% for x in data.supplier_id %}
+                                <option value="{{x.supplier_id}}">{{x.supplier_id}} - {{x.supplier_id__supplier_name}}</option>
+                            {% endfor %}
+                    </select>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <!-- Invoice Number -->
+                <div class="col-lg-4 mb-3 form-group">
+                    <label for="invoiceNumber">Invoice Number</label>
+                    <select name="invoiceNumber" id="invoiceNumber" class="form-control p-2" required>
+                       <option value="" selected disabled>select Invoice Number</option>
+                             {% for x in data.invoice_no %}
+                                <option value="{{x.invoice_no}}">{{x.invoice_no}}</option>
+                            {% endfor %}
+                    </select>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <!-- Medicine Name -->
+                <div class="col-lg-4 mb-3 form-group">
+                    <label for="medicineName">Medicine Name</label>
+                    <select name="medicineName" id="medicineName" class="form-control p-2" required>
+                        <option value="" selected disabled>Medicine id - Medicine Name</option>
+                             {% for x in data.medicine_id %}
+                                <option value="{{x.medicine_id}}">{{x.medicine_id}}-{{x.medicine_id__medicine_name}}</option>
+                            {% endfor %}
+                    </select>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <!-- Batch Number -->
+                <div class="col-lg-4 mb-3 form-group">
+                    <label for="batchNumber">Batch Number</label>
+                    <select name="batchNumber" id="batchNumber" class="form-control p-2" required>
+                         <option value="" selected disabled>select Batch Number</option>
+                             {% for x in data.batch_no %}
+                                <option value="{{x.batch_no}}">{{x.batch_no}}</option>
+                            {% endfor %}
+                    </select>
+                    <div class="invalid-feedback"></div>
+                </div>
+
+                <!-- 🔘 SUBMIT & RESET BUTTONS -->
+                <div class="col-12">
+                    <div class="d-flex justify-content-center align-items-center">
+                       <button type="button" id="search" class="btn btn-primary fs-5 p-2 rounded-1">Search</button>
+                       <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+                    </div>
+                </div>
+             </div>
+         </form>
+        </div>
+      <div class="row w-100">
+            <div class="col-12" style="overflow: auto;" id="table_data">
+            </div>
+        </div>   
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#search').click(function (e) { 
+            e.preventDefault();            
+           $.ajax({
+            type: "POST",
+            url: "{% url 'purchase_service' %}",
+            data: {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'purchaseId': $('#purchaseId').val(),
+                'supplierName': $('#supplierName').val(),
+                'invoiceNumber': $('#invoiceNumber').val(),
+                'medicineName': $('#medicineName').val(),
+                'batchNumber': $('#batchNumber').val(),
+            },
+            success: function (response) {
+                console.log('Success:', response);
+                $('#table_data').html(response.table_data);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+        });
+    });
+</script>
+
+
+{% endblock content %}

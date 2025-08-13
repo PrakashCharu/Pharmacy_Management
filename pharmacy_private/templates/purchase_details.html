@@ -1,0 +1,225 @@
+{% extends "adminbase.html" %}
+
+
+{% block content %}
+
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Admin!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'purchase_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'purchase_details' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="alert w-100">
+         <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Purchase Details Entry Form</h3>
+            <a href="{% url 'purchase_service' %}" class="btn btn-primary btn-rounded mr-3">Search</a>
+        </div>
+        <div class="col-12">
+            <form method="post" class="form-group">
+                 {% csrf_token %}
+                 <div class="row w-100">
+        <!-- 🧾 PURCHASE ENTRY FORM -->
+
+        <!-- Purchase ID -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="purchaseId">Purchase ID</label>
+            <input type="text" name="purchaseId" id="purchaseId" class="form-control p-2" placeholder="PUR001" required>
+            <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- Purchase Date -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="purchaseDate">Purchase Date</label>
+            <input type="date" name="purchaseDate" id="purchaseDate" class="form-control p-2" required>
+            <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- Supplier Name -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="supplierName">Supplier Name</label>
+            <select name="suppliername" id="supplierName" class="form-control p-2" required>
+                <option value="" selected disabled>Select Supplier Name</option>
+                {% for x in supplierName %}
+                    <option value="{{x.supplier_id}}">{{x.supplier_name}}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- Invoice Number -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="invoiceNumber">Invoice Number</label>
+            <input type="text" name="invoiceNumber" id="invoiceNumber" class="form-control p-2" placeholder="INV123456" required>
+            <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- Medicine Name -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="medicineName">Medicine Name</label>
+            <select name="medicine" id="medicine" class="form-control p-2" required>
+                {{med_options|safe}}
+            </select>
+        </div>
+
+        <div class="col-12" id="medTable">
+            <table class="table w-100">
+                <thead class="bg-dark">
+                    <th  class="text-white">Medicine&nbsp;ID</th>
+                    <th class="text-white">Medicine&nbsp;Name</th>
+                    <th class="text-white">Batch&nbsp;No.</th>
+                    <th class="text-white">Manufacture&nbsp;Date</th>
+                    <th class="text-white">Expiry&nbsp;Date</th>
+                    <th class="text-white">Unit&nbsp;Price</th>
+                    <th class="text-white">Selling&nbsp;Price</th>
+                    <th class="text-white">Quantity&nbsp;</th>
+                    <th class="text-white">Total&nbsp;Cost</th>
+                </thead>
+                <tbody id="med_data">
+
+                </tbody>
+            </table>
+        </div> 
+
+        <!-- Total Cost -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="totalCost">Gross Total (₹)</label>
+            <input type="text" name="totalCost" id="totalCost" class="form-control p-2" readonly value="00" required>
+            <div class="invalid-feedback"></div>
+        </div>
+
+
+        <!-- Tax % -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="tax">Tax (%)</label>
+            <input type="text" name="tax" id="tax" class="form-control p-2" oninput="FinalAmount()" placeholder="e.g. 5">
+            <div class="invalid-feedback"></div>
+        </div>
+
+          <!-- Final Amount -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="finalAmount">Final Amount (₹)</label>
+            <input type="text" name="finalAmount" id="finalAmount" class="form-control p-2"  placeholder="Auto Calculated" readonly value="00" required>
+            <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- Payment Mode -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="paymentMode">Payment Mode</label>
+            <select name="paymentMode" id="paymentMode" class="form-control p-2" required>
+                <option selected disabled value="">Select Payment Mode</option>
+                <option>Cash</option>
+                <option>Credit</option>
+                <option>UPI</option>
+                <option>Bank Transfer</option>
+            </select>
+            <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- Remarks -->
+        <div class="col-lg-4 mb-3 form-group">
+            <label for="remarks">Remarks</label>
+            <input type="text" name="remarks" id="remarks" class="form-control p-2" placeholder="Optional Notes" >
+            <div class="invalid-feedback"></div>
+        </div>
+
+        <!-- 🔘 SUBMIT & RESET BUTTONS -->
+        <div class="col-12">
+            <div class="d-flex justify-content-center align-items-center">
+                <button type="submit" class="btn btn-primary fs-5 p-2 rounded-1">Submit</button>
+                <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+            </div>
+        </div>
+</div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+        function GrossTotal(){
+            let totalrow = document.querySelectorAll('#med_data > tr');
+            let total_amount = 0.0
+            totalrow.forEach(ee => {
+                total_amount = parseFloat(total_amount) + parseFloat($(ee).find('input#total').val() || 0)
+
+            });
+            console.log(total_amount);
+            
+            $('#totalCost').val(total_amount);
+        }
+
+    function unitCalculation(e) { 
+        let row = $(e).closest('tr');
+        row.find('input#total').val(parseFloat(row.find('input#qty').val() | 0)  * parseFloat(row.find('input#uPrice').val() | 0))
+        GrossTotal()
+        FinalAmount()
+     }
+
+     function FinalAmount(){
+        let taxPercent = parseFloat($('#tax').val() || 0);
+        let taxAmount = (parseFloat($('#totalCost').val() || 0) * taxPercent) / 100;
+        let finalAmount = parseFloat($('#totalCost').val() || 0) + taxAmount;
+        $('#finalAmount').val(finalAmount);   
+     }
+
+
+    $(document).ready(function () {
+        let medicine =[]
+        $('#medicine').change(function (e) { 
+            e.preventDefault();
+            if (medicine.includes($(this).val())){
+                Swal.fire({
+                    title: "Already Exist",
+                    text: "The Item You Selected Already exist in the below table !",
+                    icon: "info"
+                });
+            }else{
+                medicine.push($(this).val())
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'purchase_details' %}",
+                    data: {
+                        'medID' : $(this).val()
+                    },
+                    success: function (response) {
+                        $('#med_data').append(response);
+                        GrossTotal()
+                    }
+                });
+                
+            }
+        });
+    });
+</script>
+
+{% endblock content %}
+            

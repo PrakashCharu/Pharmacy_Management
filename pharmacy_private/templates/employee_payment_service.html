@@ -1,0 +1,110 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Admin!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                         <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'emp_payment_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'emp_payment' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Employee Payment Service Form</h3>
+            <a href="{% url 'emp_payment' %}" class="btn btn-primary btn-rounded mr-3">+&nbsp;Add&nbsp;New</a>
+        </div>
+        <div class="col-12">
+            <form action="" class="form-group">
+                <div class="row w-100">
+                    <!-- 🔹 EMPLOYEE PAYMENT SERVICE FORM -->
+
+                     <!-- Payment ID -->
+                        <div class="col-lg-4 mb-3 form-group">
+                            <label for="paymentId">Payment ID</label>
+                            <select name="paymentId" id="paymentId" class="form-control p-2" >
+                                  <option value="" selected disabled>select employee ID</option>
+                                    {% for x in data.payment_id %}
+                                        <option value="{{x.payment_id}}">{{x.payment_id}}</option>
+                                    {% endfor %}
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <!-- Employee ID / Name -->
+                        <div class="col-lg-4 mb-3 form-group">
+                            <label for="employee">Employee ID / Name</label>
+                            <select name="employee" id="employee" class="form-control p-2" >
+                                <option value="" selected disabled>select employee ID</option>
+                                    {% for x in data.emp_id %}
+                                        <option value="{{x.emp_id}}">{{x.emp_id}}</option>
+                                    {% endfor %}
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <!-- Payment Date -->
+                        <div class="col-lg-4 mb-3 form-group">
+                            <label for="paymentDate">Payment Date</label>
+                            <select name="paymentDate" id="paymentDate" class="form-control p-2" >
+                                <option value="" selected disabled>select employee ID</option>
+                                    {% for x in data.paydate %}
+                                        <option value="{{x.paydate}}">{{x.paydate}}</option>
+                                    {% endfor %}
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <!-- Month & Year -->
+                        <div class="col-lg-4 mb-3 form-group">
+                            <label for="monthYear">Month & Year</label>
+                            <select name="monthYear" id="monthYear" class="form-control p-2" >
+                                <option value="" selected disabled>select employee ID</option>
+                                    {% for x in data.month %}
+                                        <option value="{{x.month}}">{{x.month}}</option>
+                                    {% endfor %}
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <!-- 🔘 SUBMIT & RESET BUTTONS -->
+                        <div class="col-12">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary fs-5 p-2 rounded-1">Search</button>
+                                <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+                            </div>
+                        </div>
+
+
+
+                   </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

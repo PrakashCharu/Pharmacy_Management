@@ -1,0 +1,102 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Admin!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'order_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'order_details' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Order Service Form</h3>
+            <a href="{% url 'order_details' %}" class="btn btn-primary btn-rounded mr-3">+&nbsp;Add&nbsp;New</a>
+        </div>
+        <div class="col-12">
+            <form action="" class="form-group">
+                <div class="row w-100">
+                    <!-- 🔹ORDER SERVICE FORM -->
+
+                    <!-- Order ID -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="orderId">Order ID</label>
+                        <input type="text" name="orderId" id="orderId" class="form-control p-2"
+                            placeholder="ORD001" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Customer ID / Name -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="customer">Customer ID / Name</label>
+                        <input type="text" name="customer" id="customer" class="form-control p-2"
+                            placeholder="Enter Customer ID or Name" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Medicine Name -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="medicineName">Medicine Name</label>
+                        <input type="text" name="medicineName" id="medicineName" class="form-control p-2"
+                            placeholder="Enter Medicine Name" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Order Date -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="orderDate">Order Date</label>
+                        <input type="date" name="orderDate" id="orderDate" class="form-control p-2" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Batch Number -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="batchNumber">Batch Number</label>
+                        <input type="text" name="batchNumber" id="batchNumber" class="form-control p-2"
+                            placeholder="Enter Batch Number" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- 🔘 SUBMIT & RESET BUTTONS -->
+                    <div class="col-12">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="btn btn-primary fs-5 p-2 rounded-1">Submit</button>
+                            <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+                        </div>
+                    </div>
+
+
+
+
+                   </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

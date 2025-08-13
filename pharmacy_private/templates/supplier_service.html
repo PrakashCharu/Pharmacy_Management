@@ -1,0 +1,166 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Hello {{request.user}}!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'supplier_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'supplier_entry' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Supplier Service Form</h3>
+            <a href="{% url 'supplier_entry' %}" class="btn btn-primary btn-rounded mr-3">+&nbsp;Add&nbsp;New</a>
+        </div>
+        <div class="col-12">
+            <form class="form-group">
+                {% csrf_token %}
+                <div class="row w-100">
+                    <!-- 🔹 SUPPLIER SERVICE FORM -->
+
+                    <!-- Supplier ID -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="supplierId">Supplier ID</label>
+                        <select name="supplierId" id="supplierId" class="form-control p-2" >
+                            <option value="" selected disabled>select supplier id</option>
+                            {% for x in data.supplier_id %}
+                                <option value="{{x.supplier_id}}">{{x.supplier_id}}</option>
+                           {% endfor %}
+                           
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Supplier Name -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="supplierName">Supplier Name</label>
+                        <select name="supplierName" id="supplierName" class="form-control p-2" >
+                             <option value="" selected disabled>select supplier name</option>
+                             {% for x in data.supplier_name %}
+                                <option value="{{x.supplier_name}}">{{x.supplier_name}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Contact Person -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="contactPerson">Contact Person</label>
+                        <select name="contactPerson" id="contactPerson" class="form-control p-2" >
+                            <option value="" selected disabled>select contact person</option>
+                             {% for x in data.contact_person %}
+                                <option value="{{x.contact_person}}">{{x.contact_person}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="supplierPhone">Phone Number</label>
+                        <select name="supplierPhone" id="supplierPhone" class="form-control p-2" >
+                            <option value="" selected disabled>select phone Number</option>
+                             {% for x in data.phone_number %}
+                                <option value="{{x.phone_number}}">{{x.phone_number}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Medicine Categories Supplied -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="medicineCategories">Medicine Categories Supplied</label>
+                        <select name="medicineCategories" id="medicineCategories" class="form-control p-2" >
+                            <option value="" selected disabled>select medicine categories</option>
+                             {% for x in data.medicine_categories %}
+                                <option value="{{x.medicine_categories}}">{{x.medicine_categories}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- License Number -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="licenseNumber">License Number</label>
+                        <select name="licenseNumber" id="licenseNumber" class="form-control p-2" >
+                            <option value="" selected disabled>select license number</option>
+                             {% for x in data.lience_number %}
+                                <option value="{{x.lience_number}}">{{x.lience_number}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- 🔘 SUBMIT & RESET BUTTONS -->
+                    <div class="col-12">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="button" id="search" class="btn btn-primary fs-5 p-2 rounded-1">Search</button>
+                            <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-12" style="overflow: auto;" id="table_data">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#search').click(function (e) { 
+            e.preventDefault();            
+           $.ajax({
+            type: "POST",
+            url: "{% url 'supplier_service' %}",
+            data: {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'supplierId': $('#supplierId').val(),
+                'supplierName': $('#supplierName').val(),
+                'contactPerson': $('#contactPerson').val(),
+                'supplierPhone': $('#supplierPhone').val(),
+                'medicineCategories': $('#medicineCategories').val(),
+                'licenseNumber': $('#licenseNumber').val(),
+    
+            },
+            success: function (response) {
+                console.log('Success:', response);
+                $('#table_data').html(response.table_data);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+        });
+    });
+</script>
+
+{% endblock content %}

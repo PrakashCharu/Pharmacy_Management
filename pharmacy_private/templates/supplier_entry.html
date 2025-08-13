@@ -1,0 +1,248 @@
+{% extends "adminbase.html" %}
+
+
+{% block content %}
+
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Hello {{request.user}}!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'supplier_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'supplier_entry' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Supplier Entry Form</h3>
+            <a href="{% url 'supplier_service' %}" class="btn btn-primary btn-rounded mr-3">Search</a>
+        </div>
+
+        <div class="col-12">
+            <form method="post" class="form-group">
+                {% csrf_token %}
+                <div class="row w-100">
+    <!-- 🚚 SUPPLIER REGISTRATION FORM -->
+
+    <!-- Supplier ID -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="supplierId">Supplier ID</label>
+        <input type="text" name="supplierId" value="{{data.supid}}" readonly id="supplierId" class="form-control p-2"
+            placeholder="SUP001" required>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- Supplier Name -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="supplierName">Supplier Name</label>
+        <input type="text" name="supplierName" id="supplierName" class="form-control p-2 alphabetvalidataion"
+            placeholder="Company or Supplier Name" required>
+        <div class="invalid-feedback1"></div>
+    </div>
+
+    <!-- Contact Person Name -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="contactPerson">Contact Person</label>
+        <input type="text" name="contactPerson" id="contactPerson" class="form-control p-2 alphabetvalidataion"
+            placeholder="Full Name" required>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" name="phone" id="phone" maxlength="11" minlength="10" class="form-control p-2 mobilevalidataion"
+            placeholder="9876543210" required>
+        <div class="invalid-feedback1"></div>
+    </div>
+
+    <!-- Email Address -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="email">Email Address</label>
+        <input type="email" name="email" id="email" class="form-control p-2"
+            placeholder="supplier@example.com" required>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- Company Address -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="address">Company Address</label>
+        <input type="text" name="address" id="address" class="form-control p-2"
+            placeholder="Complete company address" required>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- GST Number -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="gstNumber">GST Number</label>
+        <input type="text" name="gstNumber" id="gstNumber" class="form-control p-2"
+            placeholder="GSTIN" required>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- PAN Number -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="panNumber">PAN Number</label>
+        <input type="text" name="panNumber" id="panNumber" class="form-control p-2"
+            placeholder="ABCDE1234F">
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- Bank Account Number -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="accountNumber">Bank Account Number</label>
+        <input type="text" name="accountNumber" id="accountNumber" class="form-control p-2"
+            placeholder="Enter Account Number">
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- IFSC Code -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="ifsc">IFSC Code</label>
+        <input type="text" name="ifsc" id="ifsc" class="form-control p-2"
+            placeholder="e.g. SBIN0001234">
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- Medicine Categories Supplied -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="categories">Medicine Categories Supplied</label>
+        <input type="text" name="categories" id="categories" class="form-control p-2"
+            placeholder="e.g. Antibiotics, Painkillers" required>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- License Number -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="licenseNumber">License Number</label>
+        <input type="text" name="licenseNumber" id="licenseNumber" class="form-control p-2"
+            placeholder="Enter valid license number" required>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- Status -->
+    <div class="col-lg-4 mb-3 form-group">
+        <label for="status">Status</label>
+        <select name="status" id="status" class="form-control p-2" required>
+            <option selected disabled value="">Select Status</option>
+            <option value="True">Active</option>
+            <option value="False">Inactive</option>
+        </select>
+        <div class="invalid-feedback"></div>
+    </div>
+
+    <!-- 🔘 SUBMIT & RESET BUTTONS -->
+    <div class="col-12">
+        <div class="d-flex justify-content-center align-items-center">
+            <button type="submit" class="btn btn-primary fs-5 p-2 rounded-1">Submit</button>
+            <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+        </div>
+    </div>
+</div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    
+    
+
+    const validatealphabets = (event) =>{        
+        const input = event.target;
+        const error = input.nextElementSibling;
+        let value = input.value;
+        const alphabetpattern = /^[A-Za-z ]*$/;
+
+        error.textContent = ""
+        
+        if (value.startsWith(' ')){
+            error.textContent = "At First Sapace is not allowed!"
+            value = value.replace(/^\s+/,'') // Remove Leding spaces            
+        }
+        else if(!(alphabetpattern.test(value))) {
+            error.textContent = "Only Alphabets are allowed"
+            value = value.replace(/[^A-Za-z ]/g, '') // Revome Invalid Characters
+        }
+        input.value =value;
+    }
+    
+    const alphabet = document.querySelectorAll('.alphabetvalidataion')
+
+    alphabet.forEach((element) => {        
+        element.addEventListener('input', validatealphabets);
+    });
+
+
+    const validatemobileno = (event) =>{        
+        const input = event.target;
+        const error = input.nextElementSibling;
+        let value = input.value;
+        const numbertpattern = /^[0-9]*$/;
+        
+        error.textContent = ""
+        if (value.length > 10){
+            error.textContent = 'Maximum 10 Digits are Allowed'
+            value = value.slice(0, 10);
+        }
+        else if (value.length < 10){
+            error.textContent = 'Minimum 10 Digits are Required'
+        }
+        
+        if(!(numbertpattern.test(value))) {
+            error.textContent = "Only Digits are allowed"
+            value = value.replace(/[^0-9]/g, '') // Revome Invalid Characters
+        }
+        
+        // if (value.length <= 5){
+        //     error.textContent = "First 5 are Alphabets"
+        //     value = value.replace(/[^A-Z]/g, '') // Revome Invalid Characters
+        // }
+        // else if (value.length > 5 && value.length <=9 && !/^[A-Z]{5}[0-9]*$/.test(value)){
+        //     error.textContent = "4 are Digits"
+        //     value = value.slice(0, -1)
+            
+        // }
+
+        input.value =value;
+    }
+    
+    const numver = document.querySelectorAll('.mobilevalidataion');
+
+    numbers.forEach((element) => {        
+        element.addEventListener('input', validatemobileno);
+    });
+
+    
+
+    
+});
+</script>
+
+{% endblock content %}
+        

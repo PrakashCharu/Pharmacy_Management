@@ -1,0 +1,138 @@
+{% extends "adminbase.html" %}
+{% block content %}
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Good Morning Admin!</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item"><a href="{% url 'index' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'employee_service' %}">Service</a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="{% url 'employee_entry' %}">Index</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="col-5 align-self-center">
+            <div class="customize-input float-right">
+                <!-- <select class="custom-select custom-select-set form-control bg-white border-0 custom-shadow custom-radius">
+                    <option selected>Aug 19</option>
+                    <option value="1">July 19</option>
+                    <option value="2">Jun 19</option>
+                </select> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="bg-dark shadow-sm mb-3"
+            style="display: flex; width: 100%; justify-content: space-between; align-items: center; border-radius: 10px;">
+            <h3 class="bg-dark text-white text-left fw-bolder p-3 rounded-1 fs-4"> Employee Service Form</h3>
+            <a href="{% url 'employee_entry' %}" class="btn btn-primary btn-rounded mr-3">+&nbsp;Add&nbsp;New</a>
+        </div>
+        <div class="col-12">
+            <form class="form-group">
+                {% csrf_token %}
+                <div class="row w-100">
+                    <!-- 🔹 EMPLOYEE SERVICE FORM -->
+
+                     <!-- Employee ID -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="empId">Employee ID</label>
+                        <select name="empId" id="empId" class="form-control p-2" >
+                            <option value="" selected disabled>select employee ID</option>
+                             {% for x in data.emp_id %}
+                                <option value="{{x.emp_id}}">{{x.emp_id}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="empName">Full Name</label>
+                        <select name="empName" id="empName" class="form-control p-2" >
+                            <option value="" selected disabled>select employee name</option>
+                             {% for x in data.emp_name %}
+                                <option value="{{x.emp_name}}">{{x.emp_name}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="empPhone">Phone Number</label>
+                        <select name="empPhone" id="empPhone" class="form-control p-2" >
+                            <option value="" selected disabled>select employee phone number</option>
+                             {% for x in data.emp_phone %}
+                                <option value="{{x.emp_phone}}">{{x.emp_phone}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Position -->
+                    <div class="col-lg-4 mb-3 form-group">
+                        <label for="position">Position</label>
+                        <select name="position" id="position" class="form-control p-2" >
+                            <option value="" selected disabled>select employee position</option>
+                             {% for x in data.emp_position %}
+                                <option value="{{x.emp_position}}">{{x.emp_position}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- 🔘 SUBMIT & RESET BUTTONS -->
+                    <div class="col-12">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="button" id="search" class="btn btn-primary fs-5 p-2 rounded-1">Search</button>
+                            <button type="reset" class="ml-3 btn btn-danger fs-5 p-2 rounded-1">Reset</button>
+                        </div>
+                    </div>
+                   </div>
+            </form>
+        </div>
+        <div class="row" style="overflow: auto;">
+            <div class="col-12" id="table_data">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#search').click(function (e) { 
+            e.preventDefault();            
+           $.ajax({
+            type: "POST",
+            url: "{% url 'employee_service' %}",
+            data: {
+                'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+                'empId': $('#empId').val(),
+                'empName': $('#empName').val(),
+                'empPhone': $('#empPhone').val(),
+                'position': $('#position').val(),  
+            },
+            success: function (response) {
+                console.log('Success:', response);
+                $('#table_data').html(response.table_data);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+        });
+    });
+</script>
+
+{% endblock content %}
